@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/normal_bg"
+              android:orientation="vertical">
+
+    <include layout="@layout/a_view_actionbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout style="@style/IMTbleLine_UP">
+
+                <TextView
+                    android:id="@+id/department_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/remark"/>
+
+                <com.sk.weichat.view.ClearEditText
+                    android:id="@+id/department_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/department_name"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="@dimen/one_level_title"
+                    android:background="@null"
+                    android:hint="@string/tip_input_remark"
+                    android:inputType="text"
+                    android:text=""/>
+
+                <ImageView
+                    android:id="@+id/name_arrow_img1"
+                    style="@style/IMTbleLine_ArrowImg"
+                    android:contentDescription="@string/app_name"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dip"
+                android:background="@color/item_pressed_color"/>
+
+            <RelativeLayout
+                android:id="@+id/rlLabel"
+                style="@style/IMTbleLine_UP">
+
+                <TextView
+                    style="@style/IMTbleLine_TextKey"
+                    android:drawablePadding="5dp"
+                    android:text="@string/tag"/>
+
+                <ImageView
+                    android:id="@+id/name_arrow_img3"
+                    style="@style/IMTbleLine_ArrowImg"
+                    android:contentDescription="@string/app_name"
+                    android:visibility="visible"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dip"
+                android:background="@color/item_pressed_color"/>
+
+            <RelativeLayout style="@style/IMTbleLine_UP">
+
+                <TextView
+                    android:id="@+id/tvDescribe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="5dp"
+                    android:text="@string/describe"/>
+
+                <com.sk.weichat.view.ClearEditText
+                    android:id="@+id/etDescribe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDescribe"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="@dimen/one_level_title"
+                    android:background="@null"
+                    android:hint="@string/tip_input_describe"
+                    android:inputType="text"
+                    android:text=""/>
+
+                <ImageView
+                    android:id="@+id/name_arrow_img2"
+                    style="@style/IMTbleLine_ArrowImg"
+                    android:contentDescription="@string/app_name"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
