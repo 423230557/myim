@@ -50,6 +50,8 @@ public class SearchChatHistoryActivity extends BaseActivity implements View.OnCl
     private boolean isSearchSingle;// 单聊 || 群聊
     private String choose_groupmember_id;
     private String mFriendId;
+    private String roomId;
+
     private Friend mFriend;
     private String mFriendName;
 
@@ -60,6 +62,8 @@ public class SearchChatHistoryActivity extends BaseActivity implements View.OnCl
         mLoginUserId = coreManager.getSelf().getUserId();
         isSearchSingle = getIntent().getBooleanExtra("isSearchSingle", false);
         mFriendId = getIntent().getStringExtra(AppConstant.EXTRA_USER_ID);
+        roomId = getIntent().getStringExtra("roomId");
+
         mFriend = FriendDao.getInstance().getFriend(mLoginUserId, mFriendId);
         if (mFriend == null) {
             ToastUtil.showErrorData(this);
@@ -193,10 +197,11 @@ public class SearchChatHistoryActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.s_groupmember_tv:
                 Intent intent = new Intent(mContext, GroupMoreFeaturesActivity.class);
-                intent.putExtra("roomId", mFriendId);
+                intent.putExtra("roomId", roomId);
+//                ToastUtil.showLongToast(getApplicationContext(),roomId);
                 intent.putExtra("isLoadByService", true);
                 intent.putExtra("is_groupmember_chathistory", true);
-                startActivity(intent);
+                startActivityForResult(intent,0x11);
                 return;
         }
         searchDesignationIntent.putExtra("search_objectId", mFriendId);
@@ -210,6 +215,7 @@ public class SearchChatHistoryActivity extends BaseActivity implements View.OnCl
                 choose_groupmember_id = data.getStringExtra("choose_groupmember_id");
                 findViewById(R.id.s_fl).setVisibility(View.VISIBLE);
                 findViewById(R.id.s_ll).setVisibility(View.GONE);
+//                ToastUtil.showToast(mContext, "654321-"+choose_groupmember_id);
                 List<ChatMessage> messages = ChatMessageDao.getInstance().queryChatMessageByUserId(mLoginUserId, mFriendId, choose_groupmember_id);
                 mSearchChatMessageList.addAll(messages);
             }

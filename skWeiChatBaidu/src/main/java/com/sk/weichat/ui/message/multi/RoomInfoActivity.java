@@ -499,6 +499,8 @@ public class RoomInfoActivity extends BaseActivity {
                 Intent intent = new Intent(RoomInfoActivity.this, SearchChatHistoryActivity.class);
                 intent.putExtra("isSearchSingle", false);
                 intent.putExtra(AppConstant.EXTRA_USER_ID, mRoomJid);
+                intent.putExtra("roomId", mucRoom.getId());
+
                 startActivity(intent);
             }
         });

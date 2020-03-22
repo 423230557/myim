@@ -84,6 +84,7 @@ public class GroupMoreFeaturesActivity extends BaseActivity {
     private boolean isSetRemark;
 
     private RoomMember mRoomMember;
+    private BaseActivity that;
     private Map<String, String> mRemarksMap = new HashMap<>();
 
     @Override
@@ -96,7 +97,7 @@ public class GroupMoreFeaturesActivity extends BaseActivity {
         isDelete = getIntent().getBooleanExtra("isDelete", false);
         isSetRemark = getIntent().getBooleanExtra("isSetRemark", false);
         is_groupmember_chathistory = getIntent().getBooleanExtra("is_groupmember_chathistory", false);
-
+        that = this;
         initActionBar();
         initData();
         initView();
@@ -205,18 +206,20 @@ public class GroupMoreFeaturesActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final BaseSortModel<RoomMember> baseSortModel;
                 final RoomMember roomMember;
-                if (is_groupmember_chathistory) {
-                    roomMember = mSearchSortRoomMember.get((int) id);
-                    Intent intent = new Intent();
-                    intent.putExtra("choose_groupmember_id", roomMember.getUserId());
-                    setResult(RESULT_OK,intent);
-                    finish();
-                }else if (isSearch) {
+                if (isSearch) {
                     // baseSortModel = mSearchSortRoomMember..get((int) id);
                     roomMember = mSearchSortRoomMember.get((int) id);
                 } else {
                     // baseSortModel = mSortRoomMember..get((int) id);
                     roomMember = mSortRoomMember.get((int) id);
+                }
+                if (is_groupmember_chathistory) {
+                    Intent intent = new Intent();
+                    intent.putExtra("choose_groupmember_id", roomMember.getUserId());
+//                    ToastUtil.showToast(mContext, "123456-"+roomMember.getUserId());
+                    that.setResult(RESULT_OK,intent);
+                    that.finish();
+                    return;
                 }
 
                 if (isDelete) {// 踢人
@@ -282,6 +285,7 @@ public class GroupMoreFeaturesActivity extends BaseActivity {
         Map<String, String> params = new HashMap<>();
         params.put("access_token", coreManager.getSelfStatus().accessToken);
         params.put("roomId", mRoomId);
+
         if (reset) {
             params.put("joinTime", String.valueOf(0));
         } else {

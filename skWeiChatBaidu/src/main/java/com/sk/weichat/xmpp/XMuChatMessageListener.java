@@ -359,6 +359,7 @@ public class XMuChatMessageListener implements MessageListener {
                         ToastUtil.showLongToast(MyApplication.getContext(),"--"+chatMessage.getObjectId()+"--");
 
                         org.json.JSONObject json = new org.json.JSONObject(chatMessage.getObjectId());
+                        String roomJid = json.getString("roomJid");
                         String isInvite = json.getString("isInvite");
                         if (TextUtils.isEmpty(isInvite)) {
                             isInvite = "0";
@@ -370,7 +371,7 @@ public class XMuChatMessageListener implements MessageListener {
                         } else {
                             chatMessage.setContent(chatMessage.getFromUserName() + MyApplication.getContext().getString(R.string.tip_need_verify_place_holder));
                         }
-                        String roomJid = json.getString("roomJid");
+
                         if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, roomJid, chatMessage)) {
                             ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, roomJid, chatMessage, true);
                         }
@@ -560,10 +561,18 @@ public class XMuChatMessageListener implements MessageListener {
                 operatingRoomMemberDao(1, friend.getRoomId(), toUserId, null);
                 MsgBroadcast.broadcastMsgRoomUpdateGetRoomStatus(MyApplication.getContext());
             }
+            try {
+                org.json.JSONObject json = null;
+                json = new org.json.JSONObject(chatMessage.getObjectId());
+                String roomJid = json.getString("roomJid");
 
-            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, friend.getUserId(), chatMessage)) {
-                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, friend.getUserId(), chatMessage, true);
+                if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, roomJid, chatMessage)) {
+                    ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, roomJid, chatMessage, true);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
         } else if (type == XmppMessage.TYPE_NEW_NOTICE) { // 发布公告
             EventBus.getDefault().post(new EventNewNotice(chatMessage));
             String content = chatMessage.getContent();
@@ -657,9 +666,20 @@ public class XMuChatMessageListener implements MessageListener {
 
             // 更新数据库
             chatMessage.setContent(desc);
-            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, chatMessage.getObjectId(), chatMessage)) {
-                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, chatMessage.getObjectId(), chatMessage, true);
+
+            org.json.JSONObject json = null;
+            try {
+                json = new org.json.JSONObject(chatMessage.getObjectId());
+                String roomJid = json.getString("roomJid");
+
+
+            if (ChatMessageDao.getInstance().saveNewSingleChatMessage(mLoginUserId, roomJid, chatMessage)) {
+                ListenerManager.getInstance().notifyNewMesssage(mLoginUserId, roomJid, chatMessage, true);
                 MsgBroadcast.broadcastMsgRoomUpdateGetRoomStatus(MyApplication.getContext());
+            }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         } else if (type == XmppMessage.TYPE_SEND_MANAGER) {
             String content = chatMessage.getContent();
